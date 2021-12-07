@@ -59,10 +59,36 @@ describe("Testing the app endpoints", () => {
         expect(response.body.length).toBeGreaterThan(0);
     })
 
+    it("should check that the GET /products/:id endpoint returns a single product", async () => {
+        const response = await request.get("/products/61af5a655918bc8da305e13b");
+
+        expect(response.status).toBe(200);
+        expect(response.body._id).toBeDefined();
+        expect(response.body.name).toBeDefined();
+        expect(response.body.price).toBeDefined();
+    })
+
+    it("should check that the PUT /products/:id endpoint updates a product", async () => {
+        const response = await request.put("/products/61af5a655918bc8da305e13b").send({
+            name: "Test Product Updated",
+            price: 300,
+        })
+
+        expect(response.status).toBe(200);
+        expect(response.body._id).toBeDefined();
+        expect(response.body.name).toBe("Test Product Updated");
+        expect(response.body.price).toBeDefined();
+    })
+
+    it("should check that the DELETE /products/:id endpoint deletes a product", async () => {
+        const response = await request.delete("/products/61af5a655918bc8da305e13b");
+
+        expect(response.status).toBe(204);
+      
+    })
 
     afterAll(done => {
-        mongoose.connection.dropDatabase()
-            .then(() => {
+        mongoose.connection.dropDatabase().then(() => {
                 return mongoose.connection.close()
             })
             .then(() => {
@@ -71,6 +97,6 @@ describe("Testing the app endpoints", () => {
     })
 
 
-    // it("should test that the GET /products endpoint returns a list of products", async () => {})
+    it("should test that the GET /products endpoint returns a list of products", async () => {})
 
 })

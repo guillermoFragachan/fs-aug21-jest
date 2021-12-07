@@ -14,4 +14,18 @@ productsRouter
         res.status(201).send(product)
     })
 
+productsRouter
+.get('/:id', async (req, res) => {
+    const product = await ProductModel.findById(req.params.id)
+    res.status(200).send(product)
+})
+.put('/:id', async (req, res) => {
+    const product = await ProductModel.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    res.status(200).send(product)
+})
+.delete('/:id', async (req, res) => {
+    await ProductModel.findByIdAndDelete(req.params.id)
+    res.status(200).send("Product deleted")
+})
+
 export default productsRouter
