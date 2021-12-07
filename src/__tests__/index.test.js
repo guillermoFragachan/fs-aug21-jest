@@ -43,6 +43,7 @@ describe("Testing the app endpoints", () => {
         price: 200,
     }
 
+    let productResponse 
     it("should check that the POST /products endpoint creates a new product", async () => {
         const response = await request.post("/products").send(validProduct)
 
@@ -50,6 +51,7 @@ describe("Testing the app endpoints", () => {
         expect(response.body._id).toBeDefined();
         expect(response.body.name).toBeDefined();
         expect(response.body.price).toBeDefined();
+        productResponse = response.body._id
     })
 
     it("should check that the GET /products endpoint returns a list of products", async () => {
@@ -60,7 +62,7 @@ describe("Testing the app endpoints", () => {
     })
 
     it("should check that the GET /products/:id endpoint returns a single product", async () => {
-        const response = await request.get("/products/61af5a655918bc8da305e13b");
+        const response = await request.get(`/products/${productResponse}`);
 
         expect(response.status).toBe(200);
         expect(response.body._id).toBeDefined();
@@ -69,7 +71,7 @@ describe("Testing the app endpoints", () => {
     })
 
     it("should check that the PUT /products/:id endpoint updates a product", async () => {
-        const response = await request.put("/products/61af5a655918bc8da305e13b").send({
+        const response = await request.put(`/products/${productResponse}`).send({
             name: "Test Product Updated",
             price: 300,
         })
@@ -81,11 +83,34 @@ describe("Testing the app endpoints", () => {
     })
 
     it("should check that the DELETE /products/:id endpoint deletes a product", async () => {
-        const response = await request.delete("/products/61af5a655918bc8da305e13b");
+        const response = await request.delete(`/products/${productResponse}`);
 
         expect(response.status).toBe(204);
       
     })
+
+    //TEST error handling
+    
+    it("should check that the GET /products/:id endpoint returns a 404 error when the product does not exist", async () => {
+        const response = await request.get(`/products/${productResponse}`);
+
+        expect(response.status).toBe(404);
+    })
+    it("should check that the PUT /products/:id endpoint returns a 404 error when the product does not exist", async () => {
+        const response = await request.put(`/products/${productResponse}`).send({
+            name: "Test Product Updated",
+            price: 300,
+        })
+
+        expect(response.status).toBe(404);
+    })
+
+    it("should check that the DELETE /products/:id endpoint returns a 404 error when the product does not exist", async () => {
+        const response = await request.delete(`/products/${productResponse}`);
+
+        expect(response.status).toBe(404);
+    })
+
 
     afterAll(done => {
         mongoose.connection.dropDatabase().then(() => {

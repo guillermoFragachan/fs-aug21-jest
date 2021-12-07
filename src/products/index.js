@@ -17,15 +17,27 @@ productsRouter
 productsRouter
 .get('/:id', async (req, res) => {
     const product = await ProductModel.findById(req.params.id)
-    res.status(200).send(product)
+    if (!product) {
+        res.status(404).send('Product not found')
+    }else{
+        res.status(200).send(product)
+    }
 })
 .put('/:id', async (req, res) => {
     const product = await ProductModel.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    res.status(200).send(product)
+    if (!product) {
+        res.status(404).send('Product not found')
+    }else{
+        res.status(200).send(product)
+    }
 })
 .delete('/:id', async (req, res) => {
-    await ProductModel.findByIdAndDelete(req.params.id)
-    res.status(200).send("Product deleted")
+    const product = await ProductModel.findByIdAndDelete(req.params.id)
+   if (!product) {
+       res.status(404).send('Product not found')
+   }else{
+    res.status(204).send("Product deleted")
+   }
 })
 
 export default productsRouter
