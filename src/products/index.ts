@@ -1,10 +1,10 @@
-const express = require("express")
+import express from 'express'
 import  {ProductModel}  from "./model"
 
 const productsRouter = express.Router()
 
 productsRouter
-    .get('/', async (req:any, res:any) => {
+    .get('/', async (req, res) => {
         const products = await ProductModel.find({})
         res.send(products)
     })
