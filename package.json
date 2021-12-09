@@ -2,8 +2,7 @@
   "name": "fs-aug21-jest",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "type": "module",
+  "main": "index.ts",
   "scripts": {
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
     "watch": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --watchAll",
@@ -14,13 +13,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/jest": "^27.0.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-list-endpoints": "^6.0.0",
     "mongoose": "^6.0.15"
   },
   "devDependencies": {
+    "@types/jest": "^27.0.3",
     "cross-env": "^7.0.3",
     "dotenv": "^10.0.0",
     "jest": "^27.4.3",
